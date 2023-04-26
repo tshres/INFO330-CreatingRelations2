@@ -1,21 +1,22 @@
 CREATE TABLE temp_table AS
-SELECT abilities, pokedex_number
+SELECT abilities AS abilities, pokedex_number
 FROM imported_pokemon_data;
 
 CREATE TABLE pokemon AS
-SELECT abilities, trim(value) AS ability, pokedex_number
+SELECT ability, trim(value) AS ability_trim, pokedex_number
 FROM temp_table, json_each('["' || replace(abilities, ',', '","') || '"]')
 WHERE ability <> ' ';
 
 CREATE TABLE pokemon_ability AS
-SELECT ability, pokedex_number
+SELECT ability_trim, pokedex_number
 FROM pokemon;
+
 DROP TABLE pokemon;
 DROP TABLE temp_table;
 
-UPDATE pokemon_ability SET ability = REPLACE(ability, '[', '');
-UPDATE pokemon_ability SET ability = REPLACE(ability, '''', '');
-UPDATE pokemon_ability SET ability = REPLACE(ability, ']', '');
+UPDATE pokemon_ability SET ability_trim = REPLACE(ability, '[', '');
+UPDATE pokemon_ability SET ability_trim = REPLACE(ability, '''', '');
+UPDATE pokemon_ability SET ability_trim = REPLACE(ability, ']', '');
 
 
 CREATE TABLE pokemon AS
