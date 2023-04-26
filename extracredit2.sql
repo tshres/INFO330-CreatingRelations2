@@ -1,6 +1,6 @@
 CREATE TABLE trainer (
     trainer_id INTEGER NOT NULL,
-    first_name VARCHAR(80)L,
+    first_name VARCHAR(80),
     last_name VARCHAR(80)
 );
 
